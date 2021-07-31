@@ -20,7 +20,8 @@
 //!     )
 //!     .combine();
 //! ```
-//! [Generated shape]()
+//!
+#![doc(html_logo_url = "https://raw.githubusercontent.com/ChangeCaps/scissor/main/logo.png")]
 
 mod ext;
 mod holed_polygon;
