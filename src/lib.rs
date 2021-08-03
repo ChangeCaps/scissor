@@ -1,23 +1,31 @@
 //! A crate for generating shapes through different operations.
 //!
 //! # Example
+//! This is the code used to create the logo.
 //! ```
+//! // create curve that starts at the bottom, we do this to ensure a vertex is placed
+//! // at the point
 //! let shape = Parametric::new(|x| Vec2::new(x.sin(), -x.cos()), 0.0..TAU)
+//!     // complete the circle
 //!     .complete()
 //!     .map(|v| {
 //!         let f = PI / 4.0;
 //!
-//!         let p = f.sin();
-//!
-//!         if v.y < -p {
-//!             v.y = v.x.abs() / f.tan() - SQRT_2;
+//!         // if the point is under the line, move it to form the point
+//!         if v.y < -f.sin() {
+//!             v.y = v.x.abs() - SQRT_2;
 //!         }
 //!     })
+//!     // create a hole in the center
 //!     .hole(Circle::new(0.4))
+//!     // split the shape
 //!     .split(
+//!         // the background is filled in
 //!         |shape| shape.fill([0.1, 0.2, 0.6, 1.0]),
+//!         // outline the mesh and fill it with black
 //!         |shape| shape.outline(0.1).fill([0.0, 0.0, 0.0, 1.0]),
 //!     )
+//!     // combine the background and outline into a single mesh
 //!     .combine();
 //! ```
 //!
@@ -31,8 +39,7 @@ mod polyline;
 mod shape;
 pub mod shapes;
 
-#[doc(hidden)]
-pub use ext::*;
+pub use ext::ShapeExt;
 #[doc(hidden)]
 pub use glam;
 pub use holed_polygon::HoledPolygon;

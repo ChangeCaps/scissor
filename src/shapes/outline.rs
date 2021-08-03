@@ -32,12 +32,24 @@ fn offset(polygon: &Polygon, thickness: f32) -> Polygon {
     offset
 }
 
+/// Outlines a [`Shape`].
 #[derive(Clone, Debug)]
-pub struct Outline {
+pub struct Outline<T> {
     pub thickness: f32,
+    _marker: std::marker::PhantomData<*const T>,
 }
 
-impl Shape for Outline {
+impl<T> Outline<T> {
+    #[inline]
+    pub const fn new(thickness: f32) -> Self {
+        Self {
+            thickness,
+            _marker: std::marker::PhantomData,
+        }
+    }
+}
+
+impl Shape for Outline<Polygon> {
     type Input = Polygon;
     type Output = HoledPolygon;
 
@@ -61,12 +73,7 @@ impl Shape for Outline {
     }
 }
 
-#[derive(Clone, Debug)]
-pub struct OutlineHoled {
-    pub thickness: f32,
-}
-
-impl Shape for OutlineHoled {
+impl Shape for Outline<HoledPolygon> {
     type Input = HoledPolygon;
     type Output = Vec<HoledPolygon>;
 

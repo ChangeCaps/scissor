@@ -21,8 +21,3 @@ impl<T> Shape for Id<T> {
         input
     }
 }
-
-#[inline]
-pub fn id<T>() -> Id<T> {
-    Id::new()
-}

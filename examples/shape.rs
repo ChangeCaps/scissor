@@ -1,6 +1,6 @@
 use std::f32::consts::{PI, SQRT_2, TAU};
 
-use scissor::*;
+use scissor::{glam::*, *};
 
 fn main() {
     let cfg = Config { resolution: 0.1 };

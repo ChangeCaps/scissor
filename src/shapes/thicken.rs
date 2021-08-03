@@ -7,6 +7,7 @@ use crate::{polygon::Polygon, polyline::Polyline, Config, Shape};
 #[derive(Clone, Debug)]
 pub struct Thicken {
     pub thickness: f32,
+    pub round: bool,
 }
 
 impl Shape for Thicken {
@@ -44,7 +45,9 @@ impl Shape for Thicken {
         let d = p1 - p0;
         let a = d.y.atan2(d.x) + PI / 2.0;
 
-        push_cap(&mut polygon, cfg, p0, self.thickness / 2.0, a);
+        if self.round {
+            push_cap(&mut polygon, cfg, p0, self.thickness / 2.0, a);
+        }
 
         for i in 1..line.points.len() - 1 {
             let p0 = line.points[i - 1];
@@ -68,7 +71,9 @@ impl Shape for Thicken {
         let d = p1 - p0;
         let a = d.y.atan2(d.x) + PI / 2.0;
 
-        push_cap(&mut polygon, cfg, p0, self.thickness / 2.0, a);
+        if self.round {
+            push_cap(&mut polygon, cfg, p0, self.thickness / 2.0, a);
+        }
 
         for i in (1..line.points.len() - 1).rev() {
             let p0 = line.points[i - 1];

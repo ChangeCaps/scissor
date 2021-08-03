@@ -11,6 +11,7 @@ impl Default for Config {
     }
 }
 
+/// Central trait that takes in an input and generates and output from it.
 pub trait Shape {
     type Input;
     type Output;

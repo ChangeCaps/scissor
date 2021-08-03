@@ -4,6 +4,12 @@ use glam::Vec2;
 
 use crate::{polygon::Polygon, Shape};
 
+/// Creates a circle.
+///
+/// The resulting polygon will always be:
+/// * Simple
+/// * Convex
+/// * CCW
 #[derive(Clone, Debug)]
 pub struct Circle {
     pub radius: f32,
@@ -23,10 +29,12 @@ impl Shape for Circle {
     #[inline]
     fn generate(&self, cfg: &crate::Config, _: Self::Input) -> Self::Output {
         let dist = self.radius * TAU;
+        // calculate number of steps
         let steps = (dist / cfg.resolution).ceil() as usize;
 
         let mut polygon = Polygon::default();
 
+        // insert vertices
         for step in 0..steps {
             let a = (step as f32 / steps as f32) * TAU;
 

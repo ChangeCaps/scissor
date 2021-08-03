@@ -32,6 +32,7 @@ impl Polygon {
         self.points.push(point);
     }
 
+    /// Removes all self intersections.
     #[inline]
     pub fn remove_intersection(&mut self) {
         let intersections = self.intersections();
@@ -59,6 +60,7 @@ impl Polygon {
         self.is_ccw = None;
     }
 
+    /// Checks is self is counter clockwise winding order.
     #[inline]
     pub fn is_ccw(&mut self) -> bool {
         if let Some(is_ccw) = self.is_ccw {
@@ -174,6 +176,7 @@ impl Polygon {
         intersections
     }
 
+    /// Removes duplicate points and points in lines.
     #[inline]
     pub fn clean(&mut self) {
         let mut i = 1;
@@ -185,14 +188,15 @@ impl Polygon {
 
             let d = (p1 - p0).normalize().dot((p2 - p1).normalize());
 
-            if d >= 0.99999 || p0 == p1 {
-                self.points.remove(i);
+            if d == 1.0 || p0 == p1 {
+                self.points.remove(i % self.points.len());
             } else {
                 i += 1;
             }
         }
     }
 
+    /// Turns self into a simple polygon.
     #[inline]
     pub fn make_simple(&mut self) {
         if self.is_simple {
@@ -207,6 +211,7 @@ impl Polygon {
         }
     }
 
+    /// Checks if self is convex.
     #[inline]
     pub fn is_convex(&mut self) -> bool {
         if let Some(is_convex) = self.is_convex {
@@ -231,6 +236,7 @@ impl Polygon {
         }
     }
 
+    /// Insures that self is both simple and ccw.
     #[inline]
     pub fn verify(&mut self) {
         self.make_simple();
@@ -240,7 +246,7 @@ impl Polygon {
         }
     }
 
-    /// Appends hole to self.
+    /// Merges hole with self, by creating seamless connection.
     pub fn merge_hole(&mut self, mut hole: Polygon) {
         let (i, y) = hole
             .points
@@ -274,7 +280,7 @@ impl Polygon {
         }
     }
 
-    /// Triangulates the polygon using ear clipping.
+    /// Triangulates the polygon using optimized ear clipping.
     ///
     /// # Requirements
     /// 1. **Must** contain three or more points.

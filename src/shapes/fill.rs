@@ -6,11 +6,22 @@ use crate::{
 };
 
 #[derive(Clone, Debug)]
-pub struct FillPolygon {
+pub struct Fill<T> {
     pub color: [f32; 4],
+    _marker: std::marker::PhantomData<*const T>,
 }
 
-impl Shape for FillPolygon {
+impl<T> Fill<T> {
+    #[inline]
+    pub const fn new(color: [f32; 4]) -> Self {
+        Self {
+            color,
+            _marker: std::marker::PhantomData,
+        }
+    }
+}
+
+impl Shape for Fill<Polygon> {
     type Input = Polygon;
     type Output = Mesh;
 
@@ -37,12 +48,7 @@ impl Shape for FillPolygon {
     }
 }
 
-#[derive(Clone, Debug)]
-pub struct FillHoled {
-    pub color: [f32; 4],
-}
-
-impl Shape for FillHoled {
+impl Shape for Fill<HoledPolygon> {
     type Input = HoledPolygon;
     type Output = Mesh;
 
@@ -75,12 +81,7 @@ impl Shape for FillHoled {
     }
 }
 
-#[derive(Clone, Debug)]
-pub struct FillPolygons {
-    pub color: [f32; 4],
-}
-
-impl Shape for FillPolygons {
+impl Shape for Fill<Vec<HoledPolygon>> {
     type Input = Vec<HoledPolygon>;
     type Output = Mesh;
 
