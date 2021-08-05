@@ -13,8 +13,8 @@ pub struct Line {
 
 impl Line {
     #[inline]
-    pub fn new(p0: Vec2, p1: Vec2) -> Self {
-        Self { p0, p1 }
+    pub fn new(p0: impl Into<Vec2>, p1: impl Into<Vec2>) -> Self {
+        Self { p0: p0.into(), p1: p1.into() }
     }
 }
 

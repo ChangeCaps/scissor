@@ -1,6 +1,6 @@
 use crate::Shape;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct Id<T>(std::marker::PhantomData<*const T>);
 
 impl<T> Id<T> {
@@ -19,5 +19,5 @@ impl<T> Shape for Id<T> {
     #[inline]
     fn generate(&self, _cfg: &crate::Config, input: Self::Input) -> Self::Output {
         input
-    }
+    } 
 }

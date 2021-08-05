@@ -1,5 +1,7 @@
 use glam::Vec3;
 
+use crate::Shape;
+
 /// Vertex in a [`Mesh`].
 ///
 /// Use feature `bytemuck` to easily convert to bytes.

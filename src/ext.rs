@@ -2,6 +2,7 @@ use glam::Vec2;
 
 use crate::{mesh::Mesh, polygon::Polygon, polyline::Polyline, shapes::*, Shape};
 
+/// Extension trait to [`Shape`] to make code simpler to write.
 pub trait ShapeExt: Shape + Sized {
     /// Splits self into two branches, their output later to be combined.
     ///
@@ -23,6 +24,39 @@ pub trait ShapeExt: Shape + Sized {
                 t: f1(Id::new()),
                 u: f2(Id::new()),
             },
+        }
+    }
+
+    #[inline]
+    fn forward(self, length: f32) -> Combine<Self, Forward>
+    where
+        Self: Shape<Output = Polyline>,
+    {
+        Combine {
+            input: self,
+            output: Forward { length },
+        }
+    }
+
+    #[inline]
+    fn turn(self, radius: f32, angle: f32) -> Combine<Self, Turn>
+    where
+        Self: Shape<Output = Polyline>,
+    {
+        Combine {
+            input: self,
+            output: Turn { radius, angle },
+        }
+    }
+
+    #[inline]
+    fn offset(self, offset: f32) -> Combine<Self, Offset<Self::Output>>
+    where
+        Offset<Self::Output>: Shape,
+    {
+        Combine {
+            input: self,
+            output: Offset::new(offset),
         }
     }
 

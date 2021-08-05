@@ -2,7 +2,7 @@ use std::f32::consts::PI;
 
 use glam::Vec2;
 
-use crate::{polygon::Polygon, polyline::Polyline, Config, Shape};
+use crate::{Config, Shape, ShapeExt, polygon::Polygon, polyline::Polyline};
 
 #[derive(Clone, Debug)]
 pub struct Thicken {
@@ -47,6 +47,13 @@ impl Shape for Thicken {
 
         if self.round {
             push_cap(&mut polygon, cfg, p0, self.thickness / 2.0, a);
+        } else {
+            let p0 = line.points[0];
+            let p1 = line.points[1];
+
+            let n = nor(p1 - p0).normalize();
+
+            polygon.points.push(p0 - n * self.thickness / 2.0);
         }
 
         for i in 1..line.points.len() - 1 {
@@ -73,6 +80,14 @@ impl Shape for Thicken {
 
         if self.round {
             push_cap(&mut polygon, cfg, p0, self.thickness / 2.0, a);
+        } else {
+            let p0 = line.points[line.points.len() - 1];
+            let p1 = line.points[line.points.len() - 2];
+
+            let n = nor(p1 - p0).normalize();
+
+            polygon.points.push(p0 + n * self.thickness / 2.0);
+            polygon.points.push(p0 - n * self.thickness / 2.0);
         }
 
         for i in (1..line.points.len() - 1).rev() {
@@ -88,6 +103,15 @@ impl Shape for Thicken {
             let p = p1 + n * self.thickness / 2.0;
 
             polygon.push(p);
+        }
+
+        if !self.round {
+            let p0 = line.points[0];
+            let p1 = line.points[1];
+
+            let n = nor(p1 - p0).normalize();
+
+            polygon.points.push(p0 + n * self.thickness / 2.0);
         }
 
         polygon.remove_intersection();

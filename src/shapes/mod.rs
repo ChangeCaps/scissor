@@ -13,6 +13,9 @@ mod parametric;
 mod rect;
 mod split;
 mod thicken;
+mod turn;
+mod offset;
+mod forward;
 
 pub use circle::Circle;
 pub use combine::{Combine, CombineMesh, CombineMeshes};
@@ -27,3 +30,6 @@ pub use parametric::Parametric;
 pub use rect::Rect;
 pub use split::Split;
 pub use thicken::Thicken;
+pub use turn::Turn;
+pub use offset::Offset;
+pub use forward::Forward;

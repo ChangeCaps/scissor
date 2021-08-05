@@ -46,6 +46,10 @@ impl Polygon {
             }
 
             if let Some(e) = intersections.into_iter().rev().next() {
+                if i >= e {
+                    continue;
+                }
+
                 let n = e - i;
 
                 for _ in 0..n {

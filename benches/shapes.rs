@@ -17,7 +17,7 @@ fn intersections() {
     let config = Config { resolution: 0.05 };
 
     Parametric::new(|x| Vec2::new(x, x.sin()), -2.0..2.0)
-        .thicken(0.4)
+        .thicken(0.4, true)
         .generate(&config, ())
         .verify();
 }
